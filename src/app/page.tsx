@@ -58,23 +58,20 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      {/* Animated background */}
+    <div className="min-h-screen bg-[#F5F5F7]">
+      {/* Subtle background decoration */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
-        <div
-          className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: "1s" }}
-        />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#00C7BE]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FFB340]/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-16">
         {/* Header */}
         <header className="text-center mb-12">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+            <div className="w-14 h-14 rounded-2xl bg-[#00C7BE] flex items-center justify-center shadow-lg shadow-[#00C7BE]/20">
               <svg
-                className="w-7 h-7 text-white"
+                className="w-8 h-8 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -87,11 +84,11 @@ export default function Home() {
                 />
               </svg>
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold text-gray-900">
               GoodNotes Audio Extractor
             </h1>
           </div>
-          <p className="text-gray-400 text-lg max-w-xl mx-auto">
+          <p className="text-gray-600 text-lg max-w-xl mx-auto">
             Extract audio recordings from your GoodNotes files and download them
             as a ZIP archive
           </p>
@@ -99,8 +96,8 @@ export default function Home() {
 
         {/* Main content */}
         <main className="max-w-2xl mx-auto">
-          {/* Glassmorphism card */}
-          <div className="backdrop-blur-xl bg-white/5 rounded-3xl p-8 shadow-2xl border border-white/10">
+          {/* Clean card */}
+          <div className="bg-white rounded-3xl p-8 shadow-xl shadow-gray-200/50 border border-gray-100">
             {!result ? (
               <>
                 <UploadZone
@@ -109,7 +106,7 @@ export default function Home() {
                 />
 
                 {error && (
-                  <div className="mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 flex items-center gap-3">
+                  <div className="mt-6 p-4 rounded-2xl bg-red-50 border border-red-100 text-red-600 flex items-center gap-3">
                     <svg
                       className="w-5 h-5 flex-shrink-0"
                       fill="none"
@@ -130,9 +127,9 @@ export default function Home() {
             ) : (
               <div className="text-center">
                 {/* Success icon */}
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-[#34C759]/10 flex items-center justify-center">
                   <svg
-                    className="w-10 h-10 text-green-400"
+                    className="w-10 h-10 text-[#34C759]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -147,16 +144,16 @@ export default function Home() {
                 </div>
 
                 {/* Stats */}
-                <h2 className="text-2xl font-semibold text-white mb-2">
+                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
                   Extraction Complete!
                 </h2>
-                <p className="text-gray-400 mb-6">
+                <p className="text-gray-600 mb-6">
                   Found{" "}
-                  <span className="text-blue-400 font-semibold">
+                  <span className="text-[#00C7BE] font-semibold">
                     {result.extractedAudios}
                   </span>{" "}
                   audio file{result.extractedAudios !== 1 ? "s" : ""} from{" "}
-                  <span className="text-purple-400 font-semibold">
+                  <span className="text-[#FFB340] font-semibold">
                     {result.totalFiles}
                   </span>{" "}
                   GoodNotes file{result.totalFiles !== 1 ? "s" : ""}
@@ -164,15 +161,15 @@ export default function Home() {
 
                 {/* Audio file list */}
                 {result.audioFiles.length > 0 && (
-                  <div className="mb-6 max-h-40 overflow-y-auto rounded-xl bg-gray-800/50 p-4">
+                  <div className="mb-6 max-h-40 overflow-y-auto rounded-2xl bg-gray-50 p-4 border border-gray-100">
                     <ul className="space-y-2 text-left">
                       {result.audioFiles.map((file, index) => (
                         <li
                           key={index}
-                          className="flex items-center gap-2 text-gray-300 text-sm"
+                          className="flex items-center gap-2 text-gray-700 text-sm"
                         >
                           <svg
-                            className="w-4 h-4 text-blue-400 flex-shrink-0"
+                            className="w-4 h-4 text-[#00C7BE] flex-shrink-0"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -197,11 +194,11 @@ export default function Home() {
                     onClick={handleDownload}
                     disabled={isDownloading || result.extractedAudios === 0}
                     className={`
-                      px-8 py-3 rounded-xl font-medium transition-all duration-200
+                      px-8 py-3 rounded-2xl font-medium transition-all duration-200
                       ${
                         result.extractedAudios === 0
-                          ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-                          : "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg hover:shadow-purple-500/30 hover:scale-105 active:scale-95"
+                          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                          : "bg-[#00C7BE] text-white hover:bg-[#00B3AB] hover:shadow-lg hover:shadow-[#00C7BE]/30 hover:scale-105 active:scale-95"
                       }
                       ${isDownloading ? "opacity-50 cursor-wait" : ""}
                     `}
@@ -245,14 +242,14 @@ export default function Home() {
 
                   <button
                     onClick={handleReset}
-                    className="px-6 py-3 rounded-xl font-medium text-gray-300 bg-gray-700/50 hover:bg-gray-700 transition-all duration-200"
+                    className="px-6 py-3 rounded-2xl font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all duration-200"
                   >
                     Extract More
                   </button>
                 </div>
 
                 {result.extractedAudios === 0 && (
-                  <p className="mt-4 text-yellow-400/80 text-sm">
+                  <p className="mt-4 text-[#FFB340] text-sm">
                     No audio files found in the uploaded GoodNotes files.
                   </p>
                 )}

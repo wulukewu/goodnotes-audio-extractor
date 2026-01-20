@@ -119,8 +119,8 @@ export default function UploadZone({
         transition-all duration-300 ease-out cursor-pointer
         ${
           isDragging
-            ? "border-blue-400 bg-blue-500/10 scale-[1.02]"
-            : "border-gray-600 bg-gray-800/50 hover:border-gray-500 hover:bg-gray-800/70"
+            ? "border-[#00C7BE] bg-[#00C7BE]/5 scale-[1.02]"
+            : "border-gray-200 bg-gray-50 hover:border-[#00C7BE]/50 hover:bg-[#00C7BE]/5"
         }
         ${isUploading ? "pointer-events-none" : ""}
       `}
@@ -136,11 +136,11 @@ export default function UploadZone({
 
       {isUploading ? (
         <div className="flex flex-col items-center gap-4">
-          <div className="w-16 h-16 rounded-full border-4 border-gray-600 border-t-blue-500 animate-spin" />
-          <p className="text-gray-300 text-lg">Processing files...</p>
-          <div className="w-full max-w-xs h-2 bg-gray-700 rounded-full overflow-hidden">
+          <div className="w-16 h-16 rounded-full border-4 border-gray-200 border-t-[#00C7BE] animate-spin" />
+          <p className="text-gray-600 text-lg">Processing files...</p>
+          <div className="w-full max-w-xs h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
+              className="h-full bg-[#00C7BE] transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -149,13 +149,13 @@ export default function UploadZone({
         <div className="flex flex-col items-center gap-4">
           <div
             className={`
-            w-20 h-20 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20
+            w-20 h-20 rounded-full bg-[#00C7BE]/10
             flex items-center justify-center transition-transform duration-300
             ${isDragging ? "scale-110" : ""}
           `}
           >
             <svg
-              className="w-10 h-10 text-blue-400"
+              className="w-10 h-10 text-[#00C7BE]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -169,14 +169,14 @@ export default function UploadZone({
             </svg>
           </div>
           <div className="text-center">
-            <p className="text-xl font-medium text-gray-200">
+            <p className="text-xl font-medium text-gray-800">
               {isDragging
                 ? "Drop your files here"
                 : "Drop GoodNotes files here"}
             </p>
-            <p className="text-gray-400 mt-2">or click to browse</p>
+            <p className="text-gray-500 mt-2">or click to browse</p>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
+          <div className="flex items-center gap-2 text-sm text-gray-400">
             <svg
               className="w-4 h-4"
               fill="none"
