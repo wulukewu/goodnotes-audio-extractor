@@ -20,17 +20,20 @@ A web application to extract audio recordings from GoodNotes files (.goodnotes) 
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/wulukewu/goodnotes-audio-extractor.git
 cd goodnotes-audio-extractor
 
-# Build and run
-docker-compose up --build -d
+# Development (with hot reload)
+docker-compose up
+
+# Production
+docker-compose -f docker-compose.prod.yml up --build -d
 
 # Open in browser
 open http://localhost:3000
 ```
 
-### Using Docker
+### Using Docker (Production)
 
 ```bash
 # Build the image
@@ -89,11 +92,13 @@ GoodNotes files are ZIP archives containing an `attachments/` folder with media 
 │   │   └── UploadZone.tsx         # Upload component
 │   └── lib/
 │       └── extractor.ts           # Extraction logic
-├── Dockerfile
-├── docker-compose.yml
+├── Dockerfile                     # Production build
+├── Dockerfile.dev                 # Development build
+├── docker-compose.yml             # Development (hot reload)
+├── docker-compose.prod.yml        # Production
 └── package.json
 ```
 
 ## License
 
-MIT
+[Apache License 2.0](LICENSE)

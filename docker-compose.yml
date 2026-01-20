@@ -2,16 +2,14 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
     volumes:
-      - uploads:/app/uploads
-      - output:/app/output
+      - .:/app
+      - /app/node_modules
+      - /app/.next
     restart: unless-stopped
-
-volumes:
-  uploads:
-  output:
