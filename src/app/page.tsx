@@ -2,20 +2,14 @@
 
 import { useState } from "react";
 import UploadZone from "@/components/UploadZone";
-
-interface UploadResult {
-  sessionId: string;
-  totalFiles: number;
-  extractedAudios: number;
-  audioFiles: string[];
-}
+import type { ClientExtractionResult } from "@/lib/client-extractor";
 
 export default function Home() {
-  const [result, setResult] = useState<UploadResult | null>(null);
+  const [result, setResult] = useState<ClientExtractionResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const handleUploadComplete = (uploadResult: UploadResult) => {
+  const handleUploadComplete = (uploadResult: ClientExtractionResult) => {
     setResult(uploadResult);
     setError(null);
   };
@@ -25,28 +19,20 @@ export default function Home() {
     setResult(null);
   };
 
-  const handleDownload = async () => {
-    if (!result) return;
-
+  const handleDownload = () => {
+    if (!result || result.extractedAudios === 0) return;
     setIsDownloading(true);
     try {
-      const response = await fetch(`/api/download/${result.sessionId}`);
-
-      if (!response.ok) {
-        throw new Error("Download failed");
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      const url = URL.createObjectURL(result.zipBlob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `goodnotes_audio_${result.sessionId.slice(0, 8)}.zip`;
+      a.download = "goodnotes_audio_" + result.sessionId.slice(0, 8) + ".zip";
       document.body.appendChild(a);
       a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      a.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
     } catch {
-      setError("Failed to download file");
+      setError("Could not start the download. Please try again.");
     } finally {
       setIsDownloading(false);
     }
@@ -260,8 +246,7 @@ export default function Home() {
           {/* Footer info */}
           <div className="mt-8 text-center text-gray-500 text-sm">
             <p>
-              Files are processed locally and automatically deleted after
-              download.
+              Files are processed in your browser, never uploaded to the server.
             </p>
           </div>
         </main>
