@@ -1,104 +1,48 @@
 # GoodNotes Audio Extractor
 
-A web application to extract audio recordings from GoodNotes files (.goodnotes) and download them as a ZIP archive.
+Extract audio recordings from GoodNotes documents (.goodnotes) and download them as a ZIP.
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
-![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker)
+## Render Free optimization
+
+The original application uploaded the entire GoodNotes document to Next.js and processed it in server memory. Render Free has only 512 MB RAM, and large uploads could take a long time or exhaust memory.
+
+The app now performs extraction and ZIP creation directly in the visitor's browser. No GoodNotes files are sent to the server. Render only needs to serve the Next.js app.
+
+The former server upload and download endpoints respond with HTTP 410.
 
 ## Features
 
-- 📤 Drag-and-drop file upload
-- 🎵 Extracts all audio files from GoodNotes documents
-- 📦 Downloads extracted audio as a ZIP file
-- 🐳 Docker and Docker Compose support
-- 🎨 Modern, responsive UI with dark mode
+- Drag and drop one or more GoodNotes exports
+- Extract recordings (same original heuristic: attachments larger than 1 MB)
+- Show stages and progress for reading, extracting attachments and creating ZIP
+- Detect invalid archives and display actionable error messages
+- Rename duplicate audio files safely
+- Avoid CPU-intensive recompression of MP4 recordings
+- Show a memory warning for files over 200 MB
 
-## Quick Start
+## Getting started
 
-### Using Docker Compose (Recommended)
+With Docker Compose, run:
 
-```bash
-# Clone the repository
-git clone https://github.com/wulukewu/goodnotes-audio-extractor.git
-cd goodnotes-audio-extractor
+    docker compose -f docker-compose.prod.yml up --build -d
 
-# Development (with hot reload)
-docker-compose up
+Or locally:
 
-# Production
-docker-compose -f docker-compose.prod.yml up --build -d
+    npm ci
+    npm run dev
 
-# Open in browser
-open http://localhost:3000
-```
+Then open http://localhost:3000.
 
-### Using Docker (Production)
+## How it works
 
-```bash
-# Build the image
-docker build -t goodnotes-extractor .
+JSZip opens the GoodNotes ZIP archive in the browser, inspects the attachments folder, extracts attachments over 1 MB, then generates a ZIP Blob with STORE compression. The user downloads the Blob directly without visiting a server endpoint.
 
-# Run the container
-docker run -p 3000:3000 goodnotes-extractor
-```
+## Limitations
 
-### Local Development
+JSZip buffers content in browser memory. Processing very large files can still exceed the browser or device memory. For large documents, try processing one at a time on a desktop browser. Render Free may take longer to load the site after 15 minutes of idle time; that is unrelated to extraction.
 
-```bash
-# Install dependencies
-npm install
+## Stack
 
-# Run development server
-npm run dev
+Next.js 16, TypeScript, React, Tailwind CSS, JSZip, Docker.
 
-# Open in browser
-open http://localhost:3000
-```
-
-## Usage
-
-1. Open the application in your browser
-2. Drag and drop your `.goodnotes` file(s) onto the upload zone
-3. Wait for the extraction to complete
-4. Click "Download ZIP" to get your audio files
-
-## How It Works
-
-GoodNotes files are ZIP archives containing an `attachments/` folder with media files. This app:
-
-1. Opens the `.goodnotes` file as a ZIP archive
-2. Finds audio files in the `attachments/` folder (files >1MB)
-3. Packages all audio files into a downloadable ZIP
-
-## Tech Stack
-
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **File Processing**: JSZip
-
-## Project Structure
-
-```
-├── src/
-│   ├── app/
-│   │   ├── api/
-│   │   │   ├── upload/route.ts    # File upload endpoint
-│   │   │   └── download/[sessionId]/route.ts  # ZIP download
-│   │   ├── page.tsx               # Main UI
-│   │   └── layout.tsx             # App layout
-│   ├── components/
-│   │   └── UploadZone.tsx         # Upload component
-│   └── lib/
-│       └── extractor.ts           # Extraction logic
-├── Dockerfile                     # Production build
-├── Dockerfile.dev                 # Development build
-├── docker-compose.yml             # Development (hot reload)
-├── docker-compose.prod.yml        # Production
-└── package.json
-```
-
-## License
-
-[Apache License 2.0](LICENSE)
+Apache License 2.0.
